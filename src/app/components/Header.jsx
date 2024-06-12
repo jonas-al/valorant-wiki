@@ -8,10 +8,10 @@ const Header = () => {
   const router = useRouter()
 
   return (
-    <div className='flex justify-between items-center px-12 py-4 bg-[#060b0f]'>
+    <div className='flex justify-between items-center px-12 py-4 bg-[#060b0f] shadow'>
       <div
         onClick={() => router.push(`/`)}
-        className='flex items-center gap-x-3 cursor-pointer'
+        className='flex items-center gap-x-3 cursor-pointer shadow'
       >
         <Image
           className='relative'
@@ -24,15 +24,15 @@ const Header = () => {
         <h1 className='text-lg uppercase font-medium'>Valorant Wikir</h1>
       </div>
       <nav className='flex'>
-        <Link href='/' className='flex flex-col group gap-1'>
+        <Link href='/' className='flex flex-col group gap-1 shadow'>
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>agentes</p>
-          <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
+          <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm shadow' />
         </Link>
-        <Link href='/mapas' className='flex flex-col group gap-1'>
+        <Link href='/mapas' className='flex flex-col group gap-1 shadow'>
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>mapas</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
-        <Link href='/armas' className='flex flex-col group gap-1'>
+        <Link href='/armas' className='flex flex-col group gap-1 shadow'>
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>armas</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>

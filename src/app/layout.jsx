@@ -16,7 +16,9 @@ export default function RootLayout({ children }) {
     <html lang='pt-br'>
       <body className={inter.className}>
         <Header />
-        <div className='px-8'>{children}</div>
+        <div className='flex justify-center items-center px-8'>
+          {children}
+        </div>
       </body>
     </html>
   );
