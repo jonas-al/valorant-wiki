@@ -3,35 +3,43 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
+// Hooks
+import { useSocket } from '@/app/hooks/useSocket'
+
+
 const agentDetails = ({ params }) => {
-  const [agent, setAgent] = useState()
+  const [agent, setAgent] = useState(undefined)
   const [selectedSkill, setSelectedSkill] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const socket = new WebSocket('ws://127.0.0.1:8080')
-
-    socket.onopen = () => {
-      console.log('Conexão estabelecida!!')
-
-      const request = {
+    const socket = useSocket(
+      {
         type: 'agentes',
         uuid: params.uuid
       }
-
-      socket.send(JSON.stringify(request))
-    }
+    )
 
     socket.onmessage = (event) => {
       console.log('Mensagem recebida!!')
-
-      const response = JSON.parse(event.data)
-      setAgent(response.data)
+      const response = JSON.parse(event.data).data
+      setAgent(response)
+      setLoading(false)
+      socket.close()
+      console.log('Conexão encerrada!!')
     }
+
   }, [])
+
+  if (loading) return (
+    <div className='absolute top-1/2 animate-pulse'>
+      <Image src='/loading.svg' width={100} height={100} alt='Loading' />
+    </div>
+  )
 
   return (
     <>
-      {agent ? <div className='flex'>
+      {agent && <div className='flex'>
         <div className='w-1/2 py-4'>
           <div className='flex flex-col justify-between'>
             <div className='flex flex-col gap-y-8'>
@@ -115,10 +123,7 @@ const agentDetails = ({ params }) => {
           <img src={`${agent.fullPortrait}`} className='scale-[1.5] translate-y-32' />
         </div>
       </div>
-        :
-        <div className='absolute top-1/2 animate-pulse'>
-          <Image src='/loading.svg' width={100} height={100} />
-        </div>}
+      }
     </>
   )
 }
