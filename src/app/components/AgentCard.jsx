@@ -37,7 +37,7 @@ const AgentCard = ({ agent }) => {
       <div style={{ backgroundImage: `url(${agent.fullPortrait})` }} className={`relative bg-cover bg-center w-full h-full ${isHovered && 'transition ease-out delay-[350] scale-x-[-1]'} `} />
       <div className='flex justify-between items-center bg-[#ff4655] uppercase text-lg font-bold px-6 py-2 rounded-b'>
         <h2>{agent.displayName}</h2>
-        <Image src={`${agent.role.displayIcon}`} width={19} height={19} className='h-[19px] hidden group-hover:block' alt='Icone da role do agente' />
+        <Image src={`${agent.role.displayIcon}`} width={19} height={19} className='h-[19px] hidden group-hover:block' alt='Icone da role do agente' priority />
       </div>
     </div>
   )

@@ -33,7 +33,7 @@ const agentDetails = ({ params }) => {
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>
-      <Image src='/loading.svg' width={100} height={100} alt='Loading' />
+      <Image src='/loading.svg' width={100} height={100} alt='Loading' priority />
     </div>
   )
 
