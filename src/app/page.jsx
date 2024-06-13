@@ -31,8 +31,8 @@ const Home = () => {
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center'>
-    {[...Array(10)].map(() => (
-      <AgentCardLoading />
+    {[...Array(10)].map((i, j) => (
+      <AgentCardLoading key={j} />
     ))}
     </div>
   )
@@ -42,7 +42,7 @@ const Home = () => {
       {agents &&
         <div className='flex flex-wrap items-center justify-center'>
           {agents.map((agent) => (
-            <AgentCard agent={agent} />
+            <AgentCard agent={agent} key={agent.uuid} />
           ))}
         </div>
       }
