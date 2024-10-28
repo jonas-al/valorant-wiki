@@ -4,10 +4,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'media.valorant-api.com',
-        port: '',
-        pathname: '/agents/**',
+        protocol: "https",
+        hostname: "media.valorant-api.com",
+        port: "",
       },
     ],
   },
