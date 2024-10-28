@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
+
+// Hooks
 import { useRouter } from 'next/navigation'
 
 const AgentCard = ({ agent }) => {
@@ -20,7 +22,7 @@ const AgentCard = ({ agent }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => router.push(`/agent-details/${agent.uuid}`)}
-      className='w-[318px] h-[432px] rounded group bg-transparent hover:bg-gradient-to-b from-transparent from-85% to-black bg-opacity-100 shadow my-16 mx-4 cursor-pointer'
+      className='w-[318px] h-[432px] rounded group bg-transparent hover:bg-gradient-to-b from-transparent from-85% to-black bg-opacity-100 shadow mx-4 cursor-pointer'
     >
       <div className='absolute' style={{
         WebkitMaskImage: `url(${agent.background})`,
@@ -31,7 +33,8 @@ const AgentCard = ({ agent }) => {
       }}>
         <div
           style={isHovered ? { ...normal, ...hover } : normal}
-          className='w-full h-full' />
+          className='w-full h-full'
+        />
       </div>
 
       <div style={{ backgroundImage: `url(${agent.fullPortrait})` }} className={`relative bg-cover bg-center w-full h-full ${isHovered && 'transition ease-out delay-[350] scale-x-[-1]'} `} />
