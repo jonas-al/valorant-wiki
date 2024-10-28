@@ -3,6 +3,7 @@ import './globals.css'
 
 // Components
 import Header from '@/app/components/Header'
+import Chat from '@/app/components/Chat'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
         <div className='flex justify-center items-center px-8 my-16'>
           {children}
         </div>
+        <Chat />
       </body>
     </html>
   );
