@@ -7,27 +7,28 @@ import AgentCard from '@/app/components/AgentCard'
 import AgentCardLoading from '@/app/components/AgentCardLoading'
 
 // Hooks
-import { useSocket } from '@/app/hooks/useSocket'
+import useSocket from '@/app/hooks/useSocket'
 
 const Home = () => {
   const [agents, setAgents] = useState(undefined)
   const [loading, setLoading] = useState(true)
+  const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
-    const socket = useSocket({
-      type: 'agentes',
-      uuid: null
-    })
-
-    socket.onmessage = (event) => {
-      console.log('Mensagem recebida!!')
-      const response = JSON.parse(event.data).data
-      setAgents(response)
-      setLoading(false)
-      socket.close()
-      console.log('Conexão encerrada!!')
+    if (isOpen) {
+      send({
+        type: "agentes",
+        uuid: null
+      })
     }
-  }, [])
+  }, [isOpen])
+
+  ws.onmessage = (event) => {
+    console.log('Mensagem recebida.')
+    const response = JSON.parse(event.data).data
+    setAgents(response)
+    setLoading(false)
+  }
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center'>

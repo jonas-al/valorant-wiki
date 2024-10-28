@@ -7,7 +7,7 @@ import Image from "next/image"
 import Carousel from "@/app/components/Carousel"
 
 // Hooks
-import { useSocket } from '@/app/hooks/useSocket'
+import useSocket from '@/app/hooks/useSocket'
 
 const Maps = ({ params }) => {
   const [map, setMap] = useState(undefined)
@@ -16,24 +16,24 @@ const Maps = ({ params }) => {
 
   const [imagesUrl, setImagesUrl] = useState([])
 
-  useEffect(() => {
-    const socket = useSocket(
-      {
-        type: 'mapas',
-        uuid: params.uuid
-      }
-    )
+  const { ws, isOpen, send } = useSocket()
 
-    socket.onmessage = (event) => {
-      console.log('Mensagem recebida!!')
-      const response = JSON.parse(event.data).data
-      setMap(response)
-      setImagesUrl([response.splash, response.premierBackgroundImage, response.stylizedBackgroundImage, response.displayIcon])
-      setLoading(false)
-      socket.close()
-      console.log('Conexão encerrada!!')
+  useEffect(() => {
+    if (isOpen) {
+      send({
+        type: "mapas",
+        uuid: params.uuid
+      })
     }
-  }, [])
+  }, [isOpen])
+
+  ws.onmessage = (event) => {
+    console.log('Mensagem recebida.')
+    const response = JSON.parse(event.data).data
+    setMap(response)
+    setImagesUrl([response.splash, response.premierBackgroundImage, response.stylizedBackgroundImage, response.displayIcon])
+    setLoading(false)
+  }
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

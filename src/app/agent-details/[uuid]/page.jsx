@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 // Hooks
-import { useSocket } from '@/app/hooks/useSocket'
+import useSocket from '@/app/hooks/useSocket'
 
 
 const agentDetails = ({ params }) => {
@@ -12,24 +12,23 @@ const agentDetails = ({ params }) => {
   const [selectedSkill, setSelectedSkill] = useState(0)
   const [loading, setLoading] = useState(true)
 
+  const { ws, isOpen, send } = useSocket()
+
   useEffect(() => {
-    const socket = useSocket(
-      {
-        type: 'agentes',
+    if (isOpen) {
+      send({
+        type: "agentes",
         uuid: params.uuid
-      }
-    )
-
-    socket.onmessage = (event) => {
-      console.log('Mensagem recebida!!')
-      const response = JSON.parse(event.data).data
-      setAgent(response)
-      setLoading(false)
-      socket.close()
-      console.log('Conexão encerrada!!')
+      })
     }
+  }, [isOpen])
 
-  }, [])
+  ws.onmessage = (event) => {
+    console.log('Mensagem recebida.')
+    const response = JSON.parse(event.data).data
+    setAgent(response)
+    setLoading(false)
+  }
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

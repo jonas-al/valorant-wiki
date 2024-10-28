@@ -6,32 +6,30 @@ import MapCard from '@/app/components/MapCard'
 import MapCardLoading from '@/app/components/MapCardLoading'
 
 // Hooks
-import { useSocket } from '@/app/hooks/useSocket'
+import useSocket from '@/app/hooks/useSocket'
 
 
 const Maps = () => {
   const [maps, setMaps] = useState(undefined)
   const [loading, setLoading] = useState(true)
 
+  const { ws, isOpen, send } = useSocket()
+
   useEffect(() => {
-    const socket = useSocket(
-      {
-        type: 'mapas',
+    if (isOpen) {
+      send({
+        type: "mapas",
         uuid: null
-      }
-    )
-
-    socket.onmessage = (event) => {
-      console.log('Mensagem recebida!!')
-      const response = JSON.parse(event.data).data
-      setMaps(response)
-      setLoading(false)
-      socket.close()
-      console.log('Conexão encerrada!!')
+      })
     }
+  }, [isOpen])
 
-  }, [])
-
+  ws.onmessage = (event) => {
+    console.log('Mensagem recebida!!')
+    const response = JSON.parse(event.data).data
+    setMaps(response)
+    setLoading(false)
+  }
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center gap-16'>
