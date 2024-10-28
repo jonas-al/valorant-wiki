@@ -22,12 +22,12 @@ const AgentCard = ({ agent }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => router.push(`/agent-details/${agent.uuid}`)}
-      className='w-[318px] h-[432px] rounded group bg-transparent hover:bg-gradient-to-b from-transparent from-85% to-black bg-opacity-100 shadow mx-4 cursor-pointer'
+      className='w-80 h-[432px] rounded group bg-transparent hover:bg-gradient-to-b from-transparent from-85% to-black bg-opacity-100 shadow mx-4 cursor-pointer'
     >
       <div className='absolute' style={{
         WebkitMaskImage: `url(${agent.background})`,
         maskImage: `url(${agent.background})`,
-        width: '318px',
+        width: '20rem',
         height: '432px',
         maskSize: 'cover'
       }}>

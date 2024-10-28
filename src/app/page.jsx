@@ -31,7 +31,7 @@ const Home = () => {
   }
 
   if (loading) return (
-    <div className='flex flex-wrap items-center justify-center'>
+    <div className='flex flex-wrap items-center justify-center gap-8'>
       {[...Array(10)].map((i, j) => (
         <AgentCardLoading key={j} />
       ))}
