@@ -28,7 +28,7 @@ const Header = () => {
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>agentes</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm shadow' />
         </Link>
-        <Link href='/mapas' className='flex flex-col group gap-1 shadow'>
+        <Link href='/maps' className='flex flex-col group gap-1 shadow'>
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>mapas</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
