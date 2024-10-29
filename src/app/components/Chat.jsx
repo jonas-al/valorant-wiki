@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { TextInput } from 'flowbite-react'
+import { format } from "date-fns";
 
 // Components
 import ChatBubble from '@/app/components/ChatBubble'
@@ -16,16 +17,19 @@ const Chat = () => {
   const [activeDropDown, setActiveDropDown] = useState(false)
   const [input, setInput] = useState("")
   const [listMsg, setListMsg] = useState([])
+  const [loading, setLoading] = useState(false)
   const chatEndRef = useRef(null);
 
   const { ws, isOpen, send } = useSocket()
 
   ws.onmessage = (event) => {
+    setLoading(false)
     console.log('Mensagem recebida!!')
-    const response = JSON.parse(event.data).data
+    const response = JSON.parse(event.data)
     setListMsg([...listMsg, {
       text: response,
-      owner: "bot"
+      owner: "bot",
+      created_at: new Date()
     }])
   }
 
@@ -34,16 +38,18 @@ const Chat = () => {
   }
 
   const sendMsg = () => {
-    if (input === "") return
+    if (isOpen && input === "") return
 
-    ws.send({
+    send({
       type: "chat",
       msg: input
     })
 
+    setLoading(true)
     setListMsg([...listMsg, {
       text: input,
-      owner: "user"
+      owner: "user",
+      created_at: new Date()
     }])
     setInput("")
   }
@@ -70,12 +76,10 @@ const Chat = () => {
         <div className={`flex flex-col bg-gray-800 h-96 p-4 gap-4 overflow-y-scroll scroll-auto ${activeDropDown ? "" : "hidden"}`}>
           {listMsg.map((msg) => {
             return (
-              <>
-                <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={msg.text} status={"Entregue"} />
-                <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={msg.text} status={"Entregue"} response />
-              </>
+              <ChatBubble hour={format(msg.created_at, "H:m")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} />
             )
           })}
+          {loading && <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={"carregandor"} status={"Entregue"} isLoading />}
           <div ref={chatEndRef} />
         </div>
         <div className={`flex gap-8 p-2 justify-between bg-gray-900 shadow-lg border-t-2 border-slate-500 ${activeDropDown ? "" : "hidden"}`}>
