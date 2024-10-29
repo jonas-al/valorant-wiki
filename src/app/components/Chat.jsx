@@ -73,7 +73,8 @@ const Chat = () => {
           <p className='font-semibold'>Max-bot</p>
           <Icon icon="fluent:chevron-up-16-filled" fontSize={24} />
         </div>
-        <div className={`flex flex-col bg-gray-800 h-96 p-4 gap-4 overflow-y-scroll scroll-auto ${activeDropDown ? "" : "hidden"}`}>
+        <div className={`flex flex-col bg-gray-800 h-96 p-4 gap-4 overflow-y-scroll ${activeDropDown ? "" : "hidden"}`}>
+          {!listMsg.length && <p className='bg-white p-4 rounded text-sm font-normal py-2.5 text-gray-900 dark:text-white'>Envie uma mensagem para iniciar a conversa.</p>}
           {listMsg.map((msg) => {
             return (
               <ChatBubble hour={format(msg.created_at, "H:m")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} />

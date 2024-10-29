@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 const ChatBubble = ({ hour, msg, status, isResponse, isLoading }) => {
 
   return (
@@ -7,7 +9,7 @@ const ChatBubble = ({ hour, msg, status, isResponse, isLoading }) => {
           <span class="text-sm font-semibold text-gray-900 dark:text-white">{isResponse || isLoading ? "Max-bot" : "Usuário"}</span>
           {!isLoading && <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{hour}</span>}
         </div>
-        {isLoading && <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white animate-bounce">...</p>}
+        {isLoading && <Image src='/loading-2.svg' width={40} height={40} alt='Loading' priority quality={100} />}
         {!isLoading && <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{msg}</p>}
         {!isLoading && <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{status}</span>}
       </div>
