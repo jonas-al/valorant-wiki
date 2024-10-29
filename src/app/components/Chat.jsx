@@ -75,16 +75,16 @@ const Chat = () => {
         </div>
         <div className={`flex flex-col bg-gray-800 h-96 p-4 gap-4 overflow-y-scroll ${activeDropDown ? "" : "hidden"}`}>
           {!listMsg.length && <p className='bg-white p-4 rounded text-sm font-normal py-2.5 text-gray-900 dark:text-white'>Envie uma mensagem para iniciar a conversa.</p>}
-          {listMsg.map((msg) => {
+          {listMsg.map((msg, index) => {
             return (
-              <ChatBubble hour={format(msg.created_at, "H:m")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} />
+              <ChatBubble hour={format(msg.created_at, "H:m")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} key={index} />
             )
           })}
-          {loading && <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={"carregandor"} status={"Entregue"} isLoading />}
+          {loading && <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={"Carregando"} status={"Entregue"} isLoading />}
           <div ref={chatEndRef} />
         </div>
         <div className={`flex gap-8 p-2 justify-between bg-gray-900 shadow-lg border-t-2 border-slate-500 ${activeDropDown ? "" : "hidden"}`}>
-          <TextInput value={input} onChange={(e) => setInput(e.target.value)} className='w-full' placeholder='Fale com o max-bot' onKeyDown={handleKeyDown} />
+          <TextInput value={input} onChange={(e) => setInput(e.target.value)} className='w-full' placeholder='Fale com o Max-bot' onKeyDown={handleKeyDown} />
           <button
             onClick={sendMsg}
             className='w-fit text-sm font-semibold px-2 rounded bg-gradient-to-r from-[#FF3743] via-[#FF5C56] to-[#FF7260] hover:bg-gradient-to-l hover:outline hover:outline-2'

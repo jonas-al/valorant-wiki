@@ -7,7 +7,7 @@ import Image from 'next/image'
 import useSocket from '@/app/hooks/useSocket'
 
 
-const agentDetails = ({ params }) => {
+const AgentDetails = ({ params }) => {
   const [agent, setAgent] = useState(undefined)
   const [selectedSkill, setSelectedSkill] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -127,4 +127,4 @@ const agentDetails = ({ params }) => {
   )
 }
 
-export default agentDetails
+export default AgentDetails
