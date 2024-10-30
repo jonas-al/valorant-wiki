@@ -32,7 +32,7 @@ const Header = () => {
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>mapas</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
-        <Link href='/armas' className='flex flex-col group gap-1 shadow'>
+        <Link href='/weapons' className='flex flex-col group gap-1 shadow'>
           <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>armas</p>
           <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
