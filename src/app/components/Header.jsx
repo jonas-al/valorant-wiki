@@ -1,50 +1,44 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const Header = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
-    <div className="flex justify-between items-center px-12 py-4 bg-[#060b0f] shadow">
+    <div className='flex justify-between items-center px-12 py-4 bg-[#060b0f] shadow'>
       <div
         onClick={() => router.push(`/`)}
-        className="flex items-center gap-x-3 cursor-pointer shadow"
+        className='flex items-center gap-x-3 cursor-pointer shadow'
       >
         <Image
-          className="relative"
-          src="/icon-valorant.svg"
-          alt="Valorant Logo"
+          className='relative'
+          src='/icon-valorant.svg'
+          alt='Valorant Logo'
           width={50}
           height={50}
           priority
         />
-        <h1 className="text-lg uppercase font-medium">Valorant Wikir</h1>
+        <h1 className='text-lg uppercase font-medium'>Valorant Wikir</h1>
       </div>
-      <nav className="flex">
-        <Link href="/" className="flex flex-col group gap-1 shadow">
-          <p className="uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]">
-            agentes
-          </p>
-          <div className="group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm shadow" />
+      <nav className='flex'>
+        <Link href='/' className='flex flex-col group gap-1 shadow'>
+          <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>agentes</p>
+          <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm shadow' />
         </Link>
-        <Link href="/maps" className="flex flex-col group gap-1 shadow">
-          <p className="uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]">
-            mapas
-          </p>
-          <div className="group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm" />
+        <Link href='/maps' className='flex flex-col group gap-1 shadow'>
+          <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>mapas</p>
+          <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
-        <Link href="/weapons" className="flex flex-col group gap-1 shadow">
-          <p className="uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]">
-            armas
-          </p>
-          <div className="group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm" />
+        <Link href='/weapons' className='flex flex-col group gap-1 shadow'>
+          <p className='uppercase font-semibold px-3 py-1 rounded hover:bg-[#0f1923]'>armas</p>
+          <div className='group-hover:bg-[#ff4655] w-full h-[2px] rounded-sm' />
         </Link>
       </nav>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
