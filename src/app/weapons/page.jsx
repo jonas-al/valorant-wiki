@@ -11,11 +11,7 @@ const Weapons = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    AxiosInstance.get("/armas", {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    AxiosInstance.get("/armas")
       .then(response => {
         setWeapons(response.data)
         setLoading(false)

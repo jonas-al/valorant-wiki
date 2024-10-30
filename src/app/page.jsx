@@ -12,11 +12,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    AxiosInstance.get("/agentes", {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    AxiosInstance.get("/agentes")
       .then(response => {
         setAgents(response.data)
         setLoading(false)

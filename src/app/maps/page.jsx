@@ -12,11 +12,7 @@ const Maps = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    AxiosInstance.get("/mapas", { type: "agentes" }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    AxiosInstance.get("/mapas", { type: "agentes" })
       .then(response => {
         setMaps(response.data)
         setLoading(false)

@@ -15,11 +15,7 @@ const Maps = ({ params }) => {
   const [imagesUrl, setImagesUrl] = useState([])
 
   useEffect(() => {
-    AxiosInstance.get(`/mapas?uuid=${params.uuid}`, { type: "agentes" }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    AxiosInstance.get(`/mapas?uuid=${params.uuid}`, { type: "agentes" })
       .then(response => {
         setMap(response.data)
         console.log(response.splash)

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { TextInput } from 'flowbite-react'
 import { format } from "date-fns";
-import axios from 'axios';
+import AxiosInstance from '@/utils/axiosInstance'
 
 // Components
 import ChatBubble from '@/app/components/ChatBubble'
@@ -33,11 +33,7 @@ const Chat = () => {
     setLoading(true)
     setInput("")
 
-    axios.post("http://localhost:5000/chat", { msg: input }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    AxiosInstance.post("/chat", { msg: input })
       .then(response => {
         setListMsg((prevList) => [
           ...prevList,
