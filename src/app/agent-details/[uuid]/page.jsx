@@ -2,37 +2,28 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-
-// Hooks
-import useSocket from '@/app/hooks/useSocket'
-
+import axios from 'axios'
 
 const AgentDetails = ({ params }) => {
   const [agent, setAgent] = useState(undefined)
   const [selectedSkill, setSelectedSkill] = useState(0)
   const [loading, setLoading] = useState(true)
 
-  const { ws, isOpen, send } = useSocket()
-
   useEffect(() => {
-    if (ws) {
-      ws.onmessage = (event) => {
-        console.log('Mensagem recebida.')
-        const response = JSON.parse(event.data).data
-        setAgent(response)
+    axios.get(`http://localhost:5000/agentes?uuid=${params.uuid}`)
+      .then(response => {
+        setAgent(response.data)
         setLoading(false)
-      }
-    }
-  }, [ws])
-
-  useEffect(() => {
-    if (isOpen) {
-      send({
-        type: "agentes",
-        uuid: params.uuid
+        console.log('Resposta:', response.data);
       })
-    }
-  }, [isOpen])
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
+  }, [])
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

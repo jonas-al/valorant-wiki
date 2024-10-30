@@ -1,39 +1,35 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import axios from 'axios';
 
 // Components
 import AgentCard from '@/app/components/AgentCard'
 import AgentCardLoading from '@/app/components/AgentCardLoading'
 
-// Hooks
-import useSocket from '@/app/hooks/useSocket'
-
 const Home = () => {
   const [agents, setAgents] = useState(undefined)
   const [loading, setLoading] = useState(true)
-  const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
-    if (ws) {
-      console.log("ws", ws)
-      ws.onmessage = (event) => {
-        console.log('Mensagem recebida.')
-        const response = JSON.parse(event.data).data
-        setAgents(response)
-        setLoading(false)
+    axios.get("http://localhost:5000/agentes", { type: "agentes" }, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    }
-  }, [ws])
-
-  useEffect(() => {
-    if (isOpen) {
-      send({
-        type: "agentes",
-        uuid: null
+    })
+      .then(response => {
+        setAgents(response.data)
+        setLoading(false)
+        console.log('Resposta:', response.data);
       })
-    }
-  }, [isOpen])
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
+  }, [])
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center gap-8'>

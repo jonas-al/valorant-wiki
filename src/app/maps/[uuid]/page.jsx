@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import axios from "axios"
 
 // Components
 import Carousel from "@/app/components/Carousel"
-
-// Hooks
-import useSocket from '@/app/hooks/useSocket'
 
 const Maps = ({ params }) => {
   const [map, setMap] = useState(undefined)
@@ -16,29 +14,27 @@ const Maps = ({ params }) => {
 
   const [imagesUrl, setImagesUrl] = useState([])
 
-  const { ws, isOpen, send } = useSocket()
-
   useEffect(() => {
-    if (ws) {
-      ws.onmessage = (event) => {
-        console.log('Mensagem recebida.')
-        const response = JSON.parse(event.data).data
-        setMap(response)
-        setImagesUrl([response.splash, response.premierBackgroundImage, response.stylizedBackgroundImage, response.displayIcon])
-        setLoading(false)
+    axios.get(`http://localhost:5000/mapas?uuid=${params.uuid}`, { type: "agentes" }, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    }
-  }, [ws])
-
-  useEffect(() => {
-    if (isOpen) {
-      send({
-        type: "mapas",
-        uuid: params.uuid
+    })
+      .then(response => {
+        setMap(response.data)
+        console.log(response.splash)
+        setImagesUrl([response.data.splash, response.data.premierBackgroundImage, response.data.stylizedBackgroundImage, response.data.displayIcon])
+        setLoading(false)
+        console.log('Resposta:', response.data);
       })
-    }
-  }, [isOpen])
-
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
+  }, [])
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

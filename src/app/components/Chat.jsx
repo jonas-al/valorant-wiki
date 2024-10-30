@@ -3,12 +3,10 @@
 import { useState, useRef, useEffect } from 'react'
 import { TextInput } from 'flowbite-react'
 import { format } from "date-fns";
+import axios from 'axios';
 
 // Components
 import ChatBubble from '@/app/components/ChatBubble'
-
-// Hooks
-import useSocket from '@/app/hooks/useSocket'
 
 // Icons
 import { Icon } from '@iconify/react'
@@ -20,42 +18,40 @@ const Chat = () => {
   const [loading, setLoading] = useState(false)
   const chatEndRef = useRef(null);
 
-  const { ws, isOpen, send } = useSocket()
-
-  useEffect(() => {
-    if (ws) {
-      ws.onmessage = (event) => {
-        setLoading(false)
-        console.log('Mensagem recebida!!')
-        const response = JSON.parse(event.data)
-        setListMsg([...listMsg, {
-          text: response,
-          owner: "bot",
-          created_at: new Date()
-        }])
-      }
-    }
-  }, [ws])
-
   const toggleActiveDropDown = () => {
     setActiveDropDown(!activeDropDown)
   }
 
   const sendMsg = () => {
-    if (isOpen && input === "") return
+    if (input === "") return
 
-    send({
-      type: "chat",
-      msg: input
-    })
+    setListMsg((prevList) => [
+      ...prevList,
+      { text: input, owner: "user", created_at: new Date() }
+    ])
 
     setLoading(true)
-    setListMsg([...listMsg, {
-      text: input,
-      owner: "user",
-      created_at: new Date()
-    }])
     setInput("")
+
+    axios.post("http://localhost:5000/chat", { msg: input }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        setListMsg((prevList) => [
+          ...prevList,
+          { text: response.data, owner: "bot", created_at: new Date() }
+        ])
+        setLoading(false)
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
   }
 
   const handleKeyDown = (e) => {
@@ -81,7 +77,7 @@ const Chat = () => {
           {!listMsg.length && <p className='bg-white p-4 rounded text-sm font-normal py-2.5 text-gray-900 dark:text-white'>Envie uma mensagem para iniciar a conversa.</p>}
           {listMsg.map((msg, index) => {
             return (
-              <ChatBubble hour={format(msg.created_at, "H:m")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} key={index} />
+              <ChatBubble hour={format(msg.created_at, "HH:mm")} msg={msg.text} status={"Entregue"} isResponse={msg.owner === "bot"} key={index} />
             )
           })}
           {loading && <ChatBubble hour={`${new Date().getHours()}:${new Date().getMinutes()}`} msg={"Carregando"} status={"Entregue"} isLoading />}
