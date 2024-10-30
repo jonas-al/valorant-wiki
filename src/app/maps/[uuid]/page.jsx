@@ -19,6 +19,18 @@ const Maps = ({ params }) => {
   const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        console.log('Mensagem recebida.')
+        const response = JSON.parse(event.data).data
+        setMap(response)
+        setImagesUrl([response.splash, response.premierBackgroundImage, response.stylizedBackgroundImage, response.displayIcon])
+        setLoading(false)
+      }
+    }
+  }, [ws])
+
+  useEffect(() => {
     if (isOpen) {
       send({
         type: "mapas",
@@ -27,13 +39,6 @@ const Maps = ({ params }) => {
     }
   }, [isOpen])
 
-  ws.onmessage = (event) => {
-    console.log('Mensagem recebida.')
-    const response = JSON.parse(event.data).data
-    setMap(response)
-    setImagesUrl([response.splash, response.premierBackgroundImage, response.stylizedBackgroundImage, response.displayIcon])
-    setLoading(false)
-  }
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

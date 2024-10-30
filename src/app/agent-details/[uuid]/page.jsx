@@ -15,6 +15,17 @@ const AgentDetails = ({ params }) => {
   const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        console.log('Mensagem recebida.')
+        const response = JSON.parse(event.data).data
+        setAgent(response)
+        setLoading(false)
+      }
+    }
+  }, [ws])
+
+  useEffect(() => {
     if (isOpen) {
       send({
         type: "agentes",
@@ -22,13 +33,6 @@ const AgentDetails = ({ params }) => {
       })
     }
   }, [isOpen])
-
-  ws.onmessage = (event) => {
-    console.log('Mensagem recebida.')
-    const response = JSON.parse(event.data).data
-    setAgent(response)
-    setLoading(false)
-  }
 
   if (loading) return (
     <div className='absolute top-1/2 animate-pulse'>

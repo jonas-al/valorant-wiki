@@ -22,16 +22,20 @@ const Chat = () => {
 
   const { ws, isOpen, send } = useSocket()
 
-  ws.onmessage = (event) => {
-    setLoading(false)
-    console.log('Mensagem recebida!!')
-    const response = JSON.parse(event.data)
-    setListMsg([...listMsg, {
-      text: response,
-      owner: "bot",
-      created_at: new Date()
-    }])
-  }
+  useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        setLoading(false)
+        console.log('Mensagem recebida!!')
+        const response = JSON.parse(event.data)
+        setListMsg([...listMsg, {
+          text: response,
+          owner: "bot",
+          created_at: new Date()
+        }])
+      }
+    }
+  }, [ws])
 
   const toggleActiveDropDown = () => {
     setActiveDropDown(!activeDropDown)

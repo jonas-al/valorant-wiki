@@ -16,6 +16,17 @@ const Maps = () => {
   const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
+    if (ws) {
+      ws.onmessage = (event) => {
+        console.log('Mensagem recebida!!')
+        const response = JSON.parse(event.data).data
+        setMaps(response)
+        setLoading(false)
+      }
+    }
+  }, [ws])
+
+  useEffect(() => {
     if (isOpen) {
       send({
         type: "mapas",
@@ -23,13 +34,6 @@ const Maps = () => {
       })
     }
   }, [isOpen])
-
-  ws.onmessage = (event) => {
-    console.log('Mensagem recebida!!')
-    const response = JSON.parse(event.data).data
-    setMaps(response)
-    setLoading(false)
-  }
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center gap-16'>

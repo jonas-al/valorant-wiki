@@ -15,6 +15,18 @@ const Home = () => {
   const { ws, isOpen, send } = useSocket()
 
   useEffect(() => {
+    if (ws) {
+      console.log("ws", ws)
+      ws.onmessage = (event) => {
+        console.log('Mensagem recebida.')
+        const response = JSON.parse(event.data).data
+        setAgents(response)
+        setLoading(false)
+      }
+    }
+  }, [ws])
+
+  useEffect(() => {
     if (isOpen) {
       send({
         type: "agentes",
@@ -22,13 +34,6 @@ const Home = () => {
       })
     }
   }, [isOpen])
-
-  ws.onmessage = (event) => {
-    console.log('Mensagem recebida.')
-    const response = JSON.parse(event.data).data
-    setAgents(response)
-    setLoading(false)
-  }
 
   if (loading) return (
     <div className='flex flex-wrap items-center justify-center gap-8'>
