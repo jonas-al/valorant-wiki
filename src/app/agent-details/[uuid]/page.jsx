@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import axios from 'axios'
+import AxiosInstance from '@/utils/axiosInstance'
 
 const AgentDetails = ({ params }) => {
   const [agent, setAgent] = useState(undefined)
@@ -10,7 +10,7 @@ const AgentDetails = ({ params }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/agentes?uuid=${params.uuid}`)
+    AxiosInstance.get(`/agentes?uuid=${params.uuid}`)
       .then(response => {
         setAgent(response.data)
         setLoading(false)

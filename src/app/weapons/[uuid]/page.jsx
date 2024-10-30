@@ -1,43 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useSocket } from "@/app/hooks/useSocket";
+import AxiosInstance from '@/utils/axiosInstance'
 import iconCost from "../../assets/icon-valorant.png";
 import iconArrow from "../../assets/seta-direita.png";
-const WeaponsDetails = () => {
+const WeaponsDetails = ({ params }) => {
   const [weapon, setWeapon] = useState(null);
   const [selectedSkill, setSelectedSkill] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { uuid } = useParams();
 
   useEffect(() => {
-    const socket = useSocket({
-      type: "armas",
-      uuid,
-    });
-
-    socket.onmessage = (event) => {
-      console.log("Mensagem recebida!!");
-      const response = JSON.parse(event.data).data;
-      setWeapon(response);
-      setLoading(false);
-      socket.close();
-      console.log("Conexão encerrada!!");
-    };
-
-    socket.onerror = (error) => {
-      console.error("Erro ao receber mensagem: ", error);
-      setLoading(false);
-    };
-
-    return () => {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.close();
-        console.log("Conexão WebSocket fechada ao desmontar o componente");
+    AxiosInstance.get(`/armas?uuid=${params.uuid}`, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    };
-  }, [uuid]);
+    })
+      .then(response => {
+        setWeapon(response.data)
+        setLoading(false)
+        console.log('Resposta:', response.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
+  }, [])
 
   if (loading) {
     return (
@@ -170,11 +160,10 @@ const WeaponSkills = ({ weapon, selectedSkill, setSelectedSkill }) => {
                 height: "100px",
                 borderRadius: "12px",
               }}
-              className={`transition-transform transform hover:scale-105 duration-300 ${
-                selectedSkill === index + page * skinsPerPage
-                  ? "border-4 border-[#ff4655]"
-                  : "border-4 border-transparent"
-              }`}
+              className={`transition-transform transform hover:scale-105 duration-300 ${selectedSkill === index + page * skinsPerPage
+                ? "border-4 border-[#ff4655]"
+                : "border-4 border-transparent"
+                }`}
               onClick={() => setSelectedSkill(index + page * skinsPerPage)}
             />
           ))}

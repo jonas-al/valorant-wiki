@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import AxiosInstance from '@/utils/axiosInstance'
 
 //Components
 import MapCard from '@/app/components/MapCard'
@@ -12,7 +12,7 @@ const Maps = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get("http://localhost:5000/mapas", { type: "agentes" }, {
+    AxiosInstance.get("/mapas", { type: "agentes" }, {
       headers: {
         'Content-Type': 'application/json'
       }

@@ -1,44 +1,34 @@
 "use client";
 import { useEffect, useState } from "react";
+import AxiosInstance from '@/utils/axiosInstance'
 
 // Components
 import WeaponsCard from "../components/Weapons/WeaponsCard";
 import WeaponCardLoading from "../components/Weapons/WeaponCardLoading";
-
-// Hooks
-import { useSocket } from "../hooks/useSocket";
 
 const Weapons = () => {
   const [weapons, setWeapons] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const socket = useSocket({
-      type: "armas",
-      uuid: null,
-    });
-
-    socket.onmessage = (event) => {
-      try {
-        console.log("Mensagem recebida!!", event.data);
-        const response = JSON.parse(event.data).data;
-        console.log("Dados da API:", response);
-        if (response) {
-          response.forEach((weapon) => {
-            console.log("Verificando arma:", weapon);
-          });
-          setWeapons(response);
-          setLoading(false);
-        } else {
-          console.error("Dados inválidos recebidos:", response);
-        }
-      } catch (error) {
-        console.error("Erro ao processar a mensagem:", error);
+    AxiosInstance.get("/armas", {
+      headers: {
+        'Content-Type': 'application/json'
       }
-      socket.close();
-      console.log("Conexão encerrada!!");
-    };
-  }, []);
+    })
+      .then(response => {
+        setWeapons(response.data)
+        setLoading(false)
+        console.log('Resposta:', response.data);
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error('Erro:', error.response.data);
+        } else {
+          console.error('Erro na requisição:', error.message);
+        }
+      });
+  }, [])
 
   if (loading)
     return (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import axios from "axios"
+import AxiosInstance from '@/utils/axiosInstance'
 
 // Components
 import Carousel from "@/app/components/Carousel"
@@ -15,7 +15,7 @@ const Maps = ({ params }) => {
   const [imagesUrl, setImagesUrl] = useState([])
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/mapas?uuid=${params.uuid}`, { type: "agentes" }, {
+    AxiosInstance.get(`/mapas?uuid=${params.uuid}`, { type: "agentes" }, {
       headers: {
         'Content-Type': 'application/json'
       }
